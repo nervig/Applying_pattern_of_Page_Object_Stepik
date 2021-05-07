@@ -16,14 +16,19 @@ class ProductPage(BasePage):
     def should_be_good_in_basket(self):
         h1_tag = self.browser.find_element_by_tag_name("h1")
         h1_text = h1_tag.text
-        strong_tag = self.browser.find_element_by_tag_name("div.alertinner > strong")
+        strong_tag = self.browser.find_element_by_tag_name("#messages .alertinner strong")
         strong_text = strong_tag.text
-        assert h1_text == strong_text, "The goods in basket doesn't equal selected"
+        link = self.browser.current_url
+        # print(h1_text)
+        # print(strong_text)
+        assert h1_text == strong_text, f"The goods in basket doesn't equal selected{link}"
 
     def should_be_equals_cost(self):
-        pattern = r'\d.\d+'
+        pattern = r'\d+.\d+'
         goods_cost_class = self.browser.find_element_by_tag_name("div.product_main > p")
         goods_cost = re.search(pattern, goods_cost_class.text)
         cost_class = self.browser.find_element_by_tag_name("div.hidden-xs")
         cost_in_basket = re.search(pattern, cost_class.text)
+        # print(goods_cost)
+        # print(cost_in_basket)
         assert goods_cost[0] == cost_in_basket[0], "The price of goods on page doesn't equal the price in basket"
