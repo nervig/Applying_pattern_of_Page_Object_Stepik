@@ -9,28 +9,23 @@ class ProductPage(BasePage):
         self.solve_quiz_and_get_code()
 
     def should_be_basket_button(self):
-        product_link = self.browser.find_element(*ProductPageLocators.ADD_TO_BASKET)  # to locators
-        # file should add the PRODUCT_LINK
+        product_link = self.browser.find_element(*ProductPageLocators.ADD_TO_BASKET)
         product_link.click()
 
     def should_be_good_in_basket(self):
-        h1_tag = self.browser.find_element_by_tag_name("h1")
+        h1_tag = self.browser.find_element(*ProductPageLocators.GOODS_ON_PAGE)
         h1_text = h1_tag.text
-        strong_tag = self.browser.find_element_by_tag_name("#messages .alertinner strong")
+        strong_tag = self.browser.find_element(*ProductPageLocators.STRONG_TAG)
         strong_text = strong_tag.text
         link = self.browser.current_url
-        # print(h1_text)
-        # print(strong_text)
         assert h1_text == strong_text, f"The goods in basket doesn't equal selected{link}"
 
     def should_be_equals_cost(self):
         pattern = r'\d+.\d+'
-        goods_cost_class = self.browser.find_element_by_tag_name("div.product_main > p")
+        goods_cost_class = self.browser.find_element(*ProductPageLocators.GOODS_COST_CLASS)
         goods_cost = re.search(pattern, goods_cost_class.text)
-        cost_class = self.browser.find_element_by_tag_name("div.hidden-xs")
+        cost_class = self.browser.find_element(*ProductPageLocators.GOODS_COST)
         cost_in_basket = re.search(pattern, cost_class.text)
-        # print(goods_cost)
-        # print(cost_in_basket)
         assert goods_cost[0] == cost_in_basket[0], "The price of goods on page doesn't equal the price in basket"
 
     def should_not_be_success_message(self):
